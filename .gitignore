@@ -1,0 +1,12 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv
+venv
+ENV
+
+# Data files - Exclude all contents of the data directory
+data/
