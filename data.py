@@ -5,7 +5,8 @@ import os
 import time
 
 data_dir='data'
-file_name='CRSPm19652024'
+#file_name='CRSPm19652024'
+file_name='CRSP_v2'
 start_date='1980-01-01'
 end_date='1989-12-31'
 

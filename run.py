@@ -4,7 +4,7 @@ import zipfile
 import os
 import time
 
-def load_and_prepare_data(data_dir='data', zip_name='CRSPm19652024.zip', file_name='CRSPm19652024',
+def load_and_prepare_data(data_dir='data', zip_name='CRSPm19652024.zip', file_name='CRSP_v2.csv',
                           start_date='1965-01-01', end_date='1989-12-31'):
     """Loads and prepares the CRSP data for the specified date range."""
     print("Loading and preparing data...")
@@ -25,9 +25,11 @@ def load_and_prepare_data(data_dir='data', zip_name='CRSPm19652024.zip', file_na
     
     # Filter by date
     df = df[(df['date'] >= start_date) & (df['date'] <= end_date)].copy()
-
     df['ret'] = pd.to_numeric(df['ret'], errors='coerce')
     
+    # Filter by exchange code
+    df = df[df['EXCHCD'].isin([1, 2])]
+
     # Add year and month columns
     df['year'] = df['date'].dt.year
     df['month'] = df['date'].dt.month
@@ -36,6 +38,7 @@ def load_and_prepare_data(data_dir='data', zip_name='CRSPm19652024.zip', file_na
     # Note: CUSIP is loaded but we sort by PERMNO as it's a more stable identifier.
     df = df[['permno', 'cusip', 'date', 'year', 'month', 'ret']].copy()
     df.dropna(subset=['ret'], inplace=True)
+    df = df[df['ret'] != 0].copy()
     
     # Sort values by permno, year, and month to ensure correct time-series calculations.
     df.sort_values(by=['permno', 'year', 'month'], inplace=True)
@@ -114,15 +117,14 @@ def form_portfolios_and_calculate_returns(df, J=12, K=3):
     n_months = len(monthly_returns)
     t_stat = (avg_return / (std_dev / np.sqrt(n_months))) if std_dev > 0 else np.inf
     
-    print("\n" + "="*40)
-    print(f"Momentum Strategy Results (J={J}, K={K})")
-    print("="*40)
     print(f"Period: {monthly_returns.index.min().strftime('%Y-%m')} to {monthly_returns.index.max().strftime('%Y-%m')}")
     print(f"Number of Months in Sample: {n_months}")
-    print(f"Avg. Monthly Return (Winner-Loser): {avg_return:.4%}")
-    print(f"Standard Deviation of Returns: {std_dev:.4%}")
-    print(f"T-statistic: {t_stat:.2f}")
-    print("="*40)
+    print("="*20)
+    print(f"- J={J}, K={K}")
+    print(f"    - AVG: {avg_return:.3%}")
+    print(f"    - STD: {std_dev:.3%}")
+    print(f"    - T-stat: {t_stat:.2f}")
+    print("="*20)
 
 
 if __name__ == '__main__':
