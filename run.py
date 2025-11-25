@@ -1,20 +1,13 @@
 import pandas as pd
 import numpy as np
-import zipfile
 import os
 import time
 
-def load_and_prepare_data(data_dir='data', zip_name='CRSPm19652024.zip', file_name='CRSP_v3.csv',
+def load_and_prepare_data(data_dir='data', file_name='CRSP_v3.csv',
                           start_date='1965-01-01', end_date='1989-12-31'):
     """Loads and prepares the CRSP data for the specified date range."""
     print("Loading and preparing data...")
-    zip_path = os.path.join(data_dir, zip_name)
     file_path = os.path.join(data_dir, file_name)
-
-    if not os.path.exists(file_path):
-        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-            zip_ref.extractall(data_dir)
-        print(f"Extracted '{file_name}'.")
 
     try:
         df = pd.read_csv(file_path, low_memory=False)

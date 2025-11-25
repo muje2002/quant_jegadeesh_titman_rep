@@ -2,8 +2,8 @@
 - Paper representation "Returns to Buying Winners and Selling  Losers: Implications for  Stock Market Efficiency" by NARASIMHAN JEGADEESH and SHERIDAN TITMAN
 
 # data
-- python 코드가 있는 곳에 'data' 폴더를 만들고, 그 안에 CRSP (zip) 파일을 넣어두세요
-- load_and_prepare_data 함수 호출부에서 파일경로와 파일명에 맞게 data_dir, zip_name, file_name 을 수정하세요
+- python 코드가 있는 곳에 'data' 폴더를 만들고, 그 안에 CRSP 파일을 넣어두세요
+- load_and_prepare_data 함수에서 파일경로와 파일명에 맞게 data_dir, file_name 을 수정하세요
 
 # run
 $python run.py
